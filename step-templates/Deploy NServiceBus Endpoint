@@ -1,0 +1,33 @@
+{
+  "Id": "ActionTemplates-1",
+  "Name": "Deploy NServiceBus Endpoint",
+  "Description": null,
+  "ActionType": "Octopus.TentaclePackage",
+  "Version": 38,
+  "Properties": {
+    "Octopus.Action.WindowsService.CustomAccountPassword": "#{Password}",
+    "Octopus.Action.EnabledFeatures": "Octopus.Features.CustomScripts,Octopus.Features.ConfigurationVariables,Octopus.Features.ConfigurationTransforms,Octopus.Features.WindowsService",
+    "Octopus.Action.Package.AutomaticallyRunConfigurationTransformationFiles": "True",
+    "Octopus.Action.Package.AutomaticallyUpdateAppSettingsAndConnectionStrings": "True",
+    "Octopus.Action.Package.DownloadOnTentacle": "False",
+    "Octopus.Action.Package.NuGetFeedId": "feeds-builtin",
+    "Octopus.Action.WindowsService.CreateOrUpdateService": "True",
+    "Octopus.Action.WindowsService.ServiceAccount": "_CUSTOM",
+    "Octopus.Action.WindowsService.StartMode": "auto",
+    "Octopus.Action.WindowsService.ServiceName": "#{Octopus.Action.StepName}",
+    "Octopus.Action.WindowsService.DisplayName": "#{Octopus.Action.StepName}",
+    "Octopus.Action.WindowsService.ExecutablePath": "NServiceBus.Host.exe",
+    "Octopus.Action.WindowsService.CustomAccountName": "#{Username}",
+    "Octopus.Action.Package.NuGetPackageId": "#{Octopus.Action.StepName}",
+    "Octopus.Action.CustomScripts.Deploy.ps1": "if (Get-Service \"#{Octopus.Action.StepName}\" -ErrorAction SilentlyContinue)\n{\n    sc stop #{Octopus.Action.StepName}\n    sc delete #{Octopus.Action.StepName}\n}\n\n.\\NServiceBus.Host.exe -install -installInfrastructure /serviceName:\"#{Octopus.Action.StepName}\" /displayName:\"#{Octopus.Action.StepName}\" /username:\"#{Username}\" /password:\"#{Password}\"",
+    "Octopus.Action.WindowsService.Arguments": "-service",
+    "Octopus.Action.CustomScripts.PreDeploy.ps1": "",
+    "Octopus.Action.CustomScripts.PostDeploy.ps1": ""
+  },
+  "Parameters": [],
+  "$Meta": {
+    "ExportedAt": "2016-08-30T10:42:27.387Z",
+    "OctopusVersion": "3.3.26",
+    "Type": "ActionTemplate"
+  }
+}
